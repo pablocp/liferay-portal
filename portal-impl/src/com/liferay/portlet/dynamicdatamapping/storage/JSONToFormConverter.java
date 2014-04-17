@@ -4,11 +4,13 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portlet.dynamicdatamapping.layout.FormField;
 import com.liferay.portlet.dynamicdatamapping.layout.Form;
+import com.liferay.portlet.dynamicdatamapping.layout.FormField;
 import com.liferay.portlet.dynamicdatamapping.layout.FormPage;
 import com.liferay.portlet.dynamicdatamapping.layout.FormSection;
+import com.liferay.portlet.dynamicdatamapping.layout.LocalizedValue;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -92,10 +94,23 @@ public class JSONToFormConverter {
 				getFields(fieldStructure.getJSONArray("nestedFields")));
 
 		if (_valuesRoot != null) {
-			JSONObject fieldValue = _valuesRoot.getJSONObject(fieldName);
+			formField.setValue(
+				getLocalizedValue(_valuesRoot.getJSONObject(fieldName)));
 		}
 
 		return formField;
+	}
+
+	protected LocalizedValue getLocalizedValue(JSONObject valueNode) {
+		LocalizedValue value = new LocalizedValue();
+
+		Iterator<String> languageIds = valueNode.keys();
+		while(languageIds.hasNext()) {
+			String languageId = languageIds.next();
+			value.addValue(languageId, valueNode.getString(languageId));
+		}
+
+		return value;
 	}
 
 	private JSONObject _layoutRoot;
