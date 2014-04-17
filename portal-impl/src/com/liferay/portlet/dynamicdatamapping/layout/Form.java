@@ -2,7 +2,6 @@ package com.liferay.portlet.dynamicdatamapping.layout;
 
 import java.util.LinkedList;
 import java.util.List;
-
 public class Form {
 	public Form() {
 		_pages = new LinkedList<FormPage>();

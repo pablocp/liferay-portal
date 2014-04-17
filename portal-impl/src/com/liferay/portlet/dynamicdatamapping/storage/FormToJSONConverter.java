@@ -1,13 +1,12 @@
 package com.liferay.portlet.dynamicdatamapping.storage;
 
-import com.liferay.portlet.dynamicdatamapping.layout.FormField;
 import com.liferay.portlet.dynamicdatamapping.layout.Form;
+import com.liferay.portlet.dynamicdatamapping.layout.FormField;
 import com.liferay.portlet.dynamicdatamapping.layout.FormPage;
 import com.liferay.portlet.dynamicdatamapping.layout.FormSection;
 import com.liferay.portlet.dynamicdatamapping.layout.SectionLayout;
 
 import java.util.List;
-
 public class FormToJSONConverter {
 	public String convert(Form layout) {
 		_stringBuilder = new StringBuilder();
@@ -19,14 +18,8 @@ public class FormToJSONConverter {
 		return _stringBuilder.toString();
 	}
 
-	protected <T> void convert(List<T> list) {
-		_stringBuilder.append('[');
-		boolean firstItem = true;
-		for (T item: list) {
-			if (!firstItem) _stringBuilder.append(',');
-			convert(item);
-		}
-		_stringBuilder.append(']');
+	protected void convert(FormField field) {
+		_stringBuilder.append("{}");
 	}
 
 	protected void convert(FormPage page) {
@@ -34,7 +27,6 @@ public class FormToJSONConverter {
 		convert(page.getSections());
 		_stringBuilder.append('}');
 	}
-
 
 	protected void convert(FormSection section) {
 		_stringBuilder.append("{\"layout\":");
@@ -44,17 +36,25 @@ public class FormToJSONConverter {
 		_stringBuilder.append('}');
 	}
 
-	protected void convert(SectionLayout sectionLayout) {
-		_stringBuilder.append("{}");
-	}
+	protected <T> void convert(List<T> list) {
+		_stringBuilder.append('[');
+		boolean firstItem = true;
 
-	protected void convert(FormField field) {
-		_stringBuilder.append("{}");
+		for (T item : list) {
+			if (!firstItem) _stringBuilder.append(',');
+			convert(item);
+		}
+
+		_stringBuilder.append(']');
 	}
 
 	protected void convert(Object obj) {
 		throw new IllegalArgumentException(
 			"Unrecognized type:" + obj.getClass().getName());
+	}
+
+	protected void convert(SectionLayout sectionLayout) {
+		_stringBuilder.append("{}");
 	}
 
 	private StringBuilder _stringBuilder;

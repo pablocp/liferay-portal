@@ -1,7 +1,6 @@
 package com.liferay.portlet.dynamicdatamapping.layout;
 
 import java.util.List;
-
 public class FormPage {
 
 	public List<FormSection> getSections() {
