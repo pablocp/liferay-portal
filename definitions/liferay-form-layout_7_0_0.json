@@ -1,0 +1,124 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"pages": { "$ref": "#/definitions/pages" }
+	},
+	"required": [ "pages" ],
+	"additionalProperties": false,
+ 
+	"definitions": {
+		"pages": {
+			"type": "array",
+			"items": { "$ref": "#/definitions/page" }
+		},
+		"page": {
+			"type": "object",
+			"properties": {
+				"sections": { "$ref": "#/definitions/sections" }
+			},
+			"required": [ "sections" ],
+			"additionalProperties": false
+		},
+		"sections": {
+			"type": "array",
+			"items": { "$ref": "#/definitions/section" }
+		},
+		"section": {
+			"type": "object",
+			"properties": {
+				"fields": { "$ref": "#/definitions/fields" },
+				"layout": { "$ref": "#/definitions/layouts/genericLayout" }
+			},
+			"required": [ "fields" ],
+			"additionalProperties": false
+		},
+		"fields": {
+			"type": "array",
+			"items": { "$ref": "#/definitions/field" }
+		},
+		"field": {
+			"type": "object",
+			"properties": {
+				"type": { "$ref": "#/definitions/fieldTypes" },
+				"name": { "$ref": "#/definitions/fieldIdentifier" },
+				"label": { "$ref": "#/definitions/localizedString" },
+				"tip": { "$ref": "#/definitions/localizedString" },
+				"predefinedValue": { "$ref": "#/definitions/localizedString" },
+				"style": { "$ref": "#/definitions/localizedString" },
+				"visibility": { "type": "string" }
+			},
+			"required": [ "type", "name" ],
+			"additionalProperties": false
+		},
+		"fieldTypes": {
+			"enum": [
+				"boolean",
+				"date",
+				"document-library",
+				"double",
+				"float",
+				"geolocation",
+				"html",
+				"image",
+				"integer",
+				"link-to-page",
+				"long",
+				"number",
+				"short",
+				"string"
+			]
+		},
+		"fieldIdentifier": {
+			"type": "string",
+			"pattern": "^[a-zA-Z0-9_.]+$"
+		},
+		"localizedString": {
+			"type": "object",
+			"patternProperties": {
+				"^[a-z]{2}(_[a-zA-Z]+)*$": { "type": "string" }
+			},
+			"additionalProperties": false
+		},
+		"layouts": {
+			"genericLayout": {
+				"allOf": [
+					{
+						"type": "object",
+						"properties": { 
+							"layoutType": { "type": "string" }
+						},
+						"required": [ "layoutType" ]
+					},
+					{
+						"anyOf":[
+							{ "$ref": "#/definitions/layouts/gridLayout" },
+							{ "$ref": "#/definitions/layouts/flowLayout" }
+						]
+					}
+				]
+			},
+			"gridLayout": {
+				"type": "object",
+				"properties": {
+					"layoutType": { "enum": [ "gridLayout" ] },
+					"cols": {
+						"type": "array",
+						"items": { "type": "integer" }
+					}
+				},
+				"required": [ "cols" ],
+				"additionalProperties": false
+			},
+			"flowLayout": {
+				"type": "object",
+				"properties": {
+					"layoutType": { "enum": [ "flowLayout" ] },
+					"float": { "enum": [ "left", "right", "none" ] }
+				},
+				"required": [ "float" ],
+				"additionalProperties": false
+			}
+		}
+	}
+}
