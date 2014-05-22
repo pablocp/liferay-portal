@@ -39,6 +39,29 @@ AUI.add(
 
 		var UNLOCALIZABLE_FIELD_ATTRS = ['indexType', 'name', 'required', 'repeatable', 'showLabel'];
 
+		var LAYOUT_FIELD_ATTRS = {
+			label: 1,
+			predefinedValue: 1,
+			style: 1,
+			tip: 1,
+			type: 1,
+			visibility: 1,
+			width: 1
+		};
+
+		var STRUCTURE_FIELD_ATTRS = {
+			calculatedValueExpression: 1,
+			dataType: 1,
+			indexType: 1,
+			localizable: 1,
+			multiple: 1,
+			name: 1,
+			nestedFields: 1,
+			repeatable: 1,
+			required: 1,
+			validation: 1
+		};
+
 		var XML_ATTRIBUTES_FIELD_ATTRS = {
 			dataType: 1,
 			indexType: 1,
@@ -249,7 +272,105 @@ AUI.add(
 
 						buffer.push(root.closeTag);
 
+						console.log(A.JSON.stringify(instance.getJSON(), null, 4));
+						// instance.getJSON();
+						console.log("FIM!!");
+
 						return buffer.join(STR_BLANK);
+					},
+
+					getJSON: function() {
+						var instance = this;
+
+						var fields = {};
+
+						var layoutFields = {};
+
+						var structureFields = {};
+
+						var translationManager = instance.translationManager;
+
+						var availableLocales = translationManager.get('availableLocales');
+
+						layoutFields.availableLanguages = translationManager.get('availableLocales').join();
+						layoutFields.defaultLocale = translationManager.get('defaultLocale');
+						layoutFields.fieldsLayout = {};
+
+						instance.get('fields').each(
+							function(field) {
+								var name = field.get('name');
+
+								layoutFields.fieldsLayout[name] = {};
+								structureFields[name] = {};
+
+								// TODO: Integrate, put it inside 'if (LAYOUT_FIELD_ATTRS[attributeName])' above
+								// as a normal property.
+								layoutFields.fieldsLayout[name]['visibility'] = '<Visibility-expression-here>';
+								layoutFields.fieldsLayout[name]['validation'] = '<Validation-expression-here>';
+								layoutFields.fieldsLayout[name]['style'] = '<Bootstrap-css-class-here>';
+
+								AArray.each(
+									field.getProperties(),
+									function(item) {
+										var attributeName = item.attributeName;
+
+										if (LAYOUT_FIELD_ATTRS[attributeName]) {
+											layoutFields.fieldsLayout[name][attributeName] = {};
+
+											if (LOCALIZABLE_FIELD_ATTRS.indexOf(attributeName) > -1) {
+												AArray.each(
+													availableLocales,
+													function(item2) {
+														var attributeValue = instance.getFieldLocalizedValue(field, attributeName, item2);
+
+														if ((attributeName === 'predefinedValue') && instanceOf(field, A.FormBuilderMultipleChoiceField)) {
+															attributeValue = A.JSON.stringify(AArray(attributeValue));
+															console.log('opa');
+															console.log(attributeValue);
+														}
+
+														layoutFields.fieldsLayout[name][attributeName][item2] = attributeValue;
+													}
+												)
+											}
+											else {
+												layoutFields.fieldsLayout[name][attributeName] = field.get(attributeName);
+											}
+										}
+										else if (STRUCTURE_FIELD_ATTRS[attributeName]) {
+											structureFields[name][attributeName] = field.get(attributeName);
+										}
+									}
+								)
+							}
+						);
+
+						// Not used yet
+						layoutFields.pages = [
+							{
+								sections: [
+									{
+										fields: ["<field-one-here>", "<field-two>"]
+									}
+								]
+							}
+						];
+
+						fields.layout = layoutFields;
+						fields.structure = structureFields;
+
+						return fields;
+					},
+
+					_getStructureFields: function() {
+						var instance = this;
+
+						var fields = {};
+
+						instance.get('fields').each(function(item, index, collection) {
+						});
+
+						return fields;
 					},
 
 					normalizeValue: function(value) {
@@ -322,6 +443,8 @@ AUI.add(
 						var instance = this;
 
 						var localizationMap = option.localizationMap;
+						console.log('xml');
+						console.log(localizationMap);
 
 						var labelTag = instance._createDynamicNode(
 							'entry',
