@@ -345,8 +345,21 @@ AUI.add(
 
 						var name = field.get('name');
 
+						var nestedFieldNames = [];
+
 						layoutFields.fieldsLayout[name] = {};
 						structureFields[name] = {};
+
+						// Adding nested fields.
+						structureFields[name].nestedFields = [];
+
+						field.get('fields').each(
+							function(childField) {
+								structureFields[name].nestedFields.push(childField.get('name'));
+
+								instance._addFieldProperties(childField, layoutFields, structureFields);
+							}
+						);
 
 						// TODO: Integrate, put it inside 'if (LAYOUT_FIELD_ATTRS[attributeName])' above
 						// as a normal property.
