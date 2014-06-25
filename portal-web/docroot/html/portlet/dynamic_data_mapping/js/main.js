@@ -290,7 +290,6 @@ AUI.add(
 
 						var translationManager = instance.translationManager;
 
-						var availableLocales = translationManager.get('availableLocales');
 						layoutFields.availableLanguages = translationManager.get('availableLocales');
 						layoutFields.defaultLanguage = translationManager.get('defaultLocale');
 						layoutFields.fieldsLayout = {};
@@ -299,48 +298,7 @@ AUI.add(
 							function(field) {
 								var name = field.get('name');
 
-								layoutFields.fieldsLayout[name] = {};
-								structureFields[name] = {};
-
-								// TODO: Integrate, put it inside 'if (LAYOUT_FIELD_ATTRS[attributeName])' above
-								// as a normal property.
-								layoutFields.fieldsLayout[name]['visibility'] = '<Visibility-expression-here>';
-								layoutFields.fieldsLayout[name]['validation'] = '<Validation-expression-here>';
-								layoutFields.fieldsLayout[name]['style'] = '<Bootstrap-css-class-here>';
-
-								AArray.each(
-									field.getProperties(),
-									function(item) {
-										var attributeName = item.attributeName;
-
-										if (LAYOUT_FIELD_ATTRS[attributeName]) {
-											layoutFields.fieldsLayout[name][attributeName] = {};
-
-											if (LOCALIZABLE_FIELD_ATTRS.indexOf(attributeName) > -1) {
-												AArray.each(
-													availableLocales,
-													function(item2) {
-														var attributeValue = instance.getFieldLocalizedValue(field, attributeName, item2);
-
-														if ((attributeName === 'predefinedValue') && instanceOf(field, A.FormBuilderMultipleChoiceField)) {
-															attributeValue = A.JSON.stringify(AArray(attributeValue));
-															console.log('opa');
-															console.log(attributeValue);
-														}
-
-														layoutFields.fieldsLayout[name][attributeName][item2] = attributeValue;
-													}
-												)
-											}
-											else {
-												layoutFields.fieldsLayout[name][attributeName] = field.get(attributeName);
-											}
-										}
-										else if (STRUCTURE_FIELD_ATTRS[attributeName]) {
-											structureFields[name][attributeName] = field.get(attributeName);
-										}
-									}
-								)
+								instance._addFieldProperties(field, layoutFields, structureFields);
 							}
 						);
 
@@ -380,6 +338,55 @@ AUI.add(
 						}
 
 						return value;
+					},
+
+					_addFieldProperties: function(field, layoutFields, structureFields) {
+						var instance = this;
+
+						var name = field.get('name');
+
+						layoutFields.fieldsLayout[name] = {};
+						structureFields[name] = {};
+
+						// TODO: Integrate, put it inside 'if (LAYOUT_FIELD_ATTRS[attributeName])' above
+						// as a normal property.
+						layoutFields.fieldsLayout[name]['visibility'] = '<Visibility-expression-here>';
+						layoutFields.fieldsLayout[name]['validation'] = '<Validation-expression-here>';
+						layoutFields.fieldsLayout[name]['style'] = '<Bootstrap-css-class-here>';
+
+						AArray.each(
+							field.getProperties(),
+							function(item) {
+								var attributeName = item.attributeName;
+
+								if (LAYOUT_FIELD_ATTRS[attributeName]) {
+									layoutFields.fieldsLayout[name][attributeName] = {};
+
+									if (LOCALIZABLE_FIELD_ATTRS.indexOf(attributeName) > -1) {
+										AArray.each(
+											layoutFields.availableLanguages,
+											function(item2) {
+												var attributeValue = instance.getFieldLocalizedValue(field, attributeName, item2);
+
+												if ((attributeName === 'predefinedValue') && instanceOf(field, A.FormBuilderMultipleChoiceField)) {
+													attributeValue = A.JSON.stringify(AArray(attributeValue));
+													console.log('opa');
+													console.log(attributeValue);
+												}
+
+												layoutFields.fieldsLayout[name][attributeName][item2] = attributeValue;
+											}
+										)
+									}
+									else {
+										layoutFields.fieldsLayout[name][attributeName] = field.get(attributeName);
+									}
+								}
+								else if (STRUCTURE_FIELD_ATTRS[attributeName]) {
+									structureFields[name][attributeName] = field.get(attributeName);
+								}
+							}
+						);
 					},
 
 					_afterEditingLocaleChange: function(event) {
