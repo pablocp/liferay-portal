@@ -284,6 +284,8 @@ AUI.add(
 
 						var fields = {};
 
+						var fieldNames = [];
+
 						var layoutFields = {};
 
 						var structureFields = {};
@@ -298,6 +300,8 @@ AUI.add(
 							function(field) {
 								var name = field.get('name');
 
+								fieldNames.push(name);
+
 								instance._addFieldProperties(field, layoutFields, structureFields);
 							}
 						);
@@ -307,7 +311,7 @@ AUI.add(
 							{
 								sections: [
 									{
-										fields: ["<field-one-here>", "<field-two>"]
+										fields: fieldNames
 									}
 								]
 							}
