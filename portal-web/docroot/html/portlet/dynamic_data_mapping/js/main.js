@@ -344,6 +344,41 @@ AUI.add(
 						return value;
 					},
 
+					_addFieldOptions: function(field, layoutFields) {
+						var instance = this;
+
+						var fieldName = field.get('name');
+
+						var options = field.get('options');
+
+						var fieldOptions = [];
+
+						if (options) {
+							AArray.each(
+								options,
+								function(option) {
+									var fieldOption = {};
+
+									var localizationMap = option.localizationMap;
+
+									fieldOption.value = option.value;
+									fieldOption.labels = {};
+
+									A.each(
+										localizationMap,
+										function(item, index, collection) {
+											fieldOption.labels[index] = instance.normalizeValue(item.label);
+										}
+									);
+
+									fieldOptions.push(fieldOption);
+								}
+							);
+
+							layoutFields.fieldsLayout[fieldName].options = fieldOptions;
+						}
+					},
+
 					_addFieldProperties: function(field, layoutFields, structureFields) {
 						var instance = this;
 
@@ -364,6 +399,8 @@ AUI.add(
 								instance._addFieldProperties(childField, layoutFields, structureFields);
 							}
 						);
+
+						instance._addFieldOptions(field, layoutFields);
 
 						// TODO: Integrate, put it inside 'if (LAYOUT_FIELD_ATTRS[attributeName])' above
 						// as a normal property.
