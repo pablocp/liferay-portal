@@ -291,9 +291,8 @@ AUI.add(
 						var translationManager = instance.translationManager;
 
 						var availableLocales = translationManager.get('availableLocales');
-
-						layoutFields.availableLanguages = translationManager.get('availableLocales').join();
-						layoutFields.defaultLocale = translationManager.get('defaultLocale');
+						layoutFields.availableLanguages = translationManager.get('availableLocales');
+						layoutFields.defaultLanguage = translationManager.get('defaultLocale');
 						layoutFields.fieldsLayout = {};
 
 						instance.get('fields').each(
