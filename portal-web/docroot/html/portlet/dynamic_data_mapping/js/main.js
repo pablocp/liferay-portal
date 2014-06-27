@@ -409,6 +409,10 @@ AUI.add(
 						layoutFields.fieldsLayout[name]['visibility'] = '<Visibility-expression-here>';
 						layoutFields.fieldsLayout[name]['validation'] = '<Validation-expression-here>';
 						layoutFields.fieldsLayout[name]['style'] = '<Bootstrap-css-class-here>';
+						structureFields[name]['dataType'] =  field.get('dataType');
+						structureFields[name]['fieldNamespace'] = field.get('fieldNamespace');
+						structureFields[name]['multiple'] = field.get('multiple');
+						structureFields[name]['readOnly'] = field.get('readOnly');
 
 						AArray.each(
 							field.getProperties(),
