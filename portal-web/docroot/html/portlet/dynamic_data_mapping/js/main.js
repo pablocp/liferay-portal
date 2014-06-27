@@ -390,15 +390,17 @@ AUI.add(
 						structureFields[name] = {};
 
 						// Adding nested fields.
-						structureFields[name].nestedFields = [];
-
 						field.get('fields').each(
 							function(childField) {
-								structureFields[name].nestedFields.push(childField.get('name'));
+								nestedFieldNames.push(childField.get('name'));
 
 								instance._addFieldProperties(childField, layoutFields, structureFields);
 							}
 						);
+
+						if (nestedFieldNames.length > 0) {
+							structureFields[name].nestedFields = nestedFieldNames;
+						}
 
 						instance._addFieldOptions(field, layoutFields);
 
