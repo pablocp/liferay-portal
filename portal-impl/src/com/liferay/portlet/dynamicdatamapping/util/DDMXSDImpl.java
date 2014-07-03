@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.dynamicdatamapping.io.DDMFormXSDSerializerUtil;
 import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
+import com.liferay.portlet.dynamicdatamapping.model.DDMFormField;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
@@ -374,6 +375,51 @@ public class DDMXSDImpl implements DDMXSD {
 		return total;
 	}
 
+	protected String getDDMFormFieldHTML(
+			HttpServletRequest request, HttpServletResponse response,
+			DDMFormField ddmFormField, Fields fields, String portletNamespace,
+			String namespace, String mode, boolean readOnly, Locale locale)
+		throws PortalException {
+
+		DDMFormFieldRenderer renderer =
+			DDMFormFieldRendererRegistryUtil.getDDMFormFieldRenderer(
+				ddmFormField.getType());
+
+		DDMFormFieldRenderingContext ddmFormFieldRenderingContext =
+			new DDMFormFieldRenderingContext(
+				request, response, portletNamespace, namespace, mode, readOnly,
+				locale);
+
+		if (fields != null) {
+			return renderer.renderFilledDDMFormField(
+				ddmFormField, fields, ddmFormFieldRenderingContext);
+		}
+		else {
+			return renderer.renderEmptyDDMFormField(
+				ddmFormField, ddmFormFieldRenderingContext);
+		}
+	}
+
+	protected String getDDMFormHTML(
+			HttpServletRequest request, HttpServletResponse response,
+			DDMForm ddmForm, Fields fields, String portletNamespace,
+			String namespace, String mode, boolean readOnly, Locale locale)
+		throws PortalException {
+
+		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+
+		StringBundler sb = new StringBundler(ddmFormFields.size());
+
+		for (DDMFormField ddmFormField : ddmFormFields) {
+			sb.append(
+				getDDMFormFieldHTML(
+					request, response, ddmFormField, fields, portletNamespace,
+					namespace, mode, readOnly, locale));
+		}
+
+		return sb.toString();
+	}
+
 	protected String getDDMStructureFieldHTMLByName(
 			HttpServletRequest request, HttpServletResponse response,
 			long classPK, String fieldName, Fields fields,
@@ -386,10 +432,13 @@ public class DDMXSDImpl implements DDMXSD {
 
 		DDMForm ddmForm = structure.getFullHierarchyDDMForm();
 
-		String xsd = DDMFormXSDSerializerUtil.serialize(ddmForm);
+		Map<String, DDMFormField> ddmFormFieldsMap =
+			ddmForm.getDDMFormFieldsMap(true);
 
-		return getFieldHTML(
-			request, response, xsd, fieldName, fields, portletNamespace,
+		DDMFormField ddmFormField = ddmFormFieldsMap.get(fieldName);
+
+		return getDDMFormFieldHTML(
+			request, response, ddmFormField, fields, portletNamespace,
 			namespace, mode, readOnly, locale);
 	}
 
@@ -404,11 +453,9 @@ public class DDMXSDImpl implements DDMXSD {
 
 		DDMForm ddmForm = structure.getFullHierarchyDDMForm();
 
-		String xsd = DDMFormXSDSerializerUtil.serialize(ddmForm);
-
-		return getHTML(
-			request, response, xsd, fields, portletNamespace, namespace, mode,
-			readOnly, locale);
+		return getDDMFormHTML(
+			request, response, ddmForm, fields, portletNamespace, namespace,
+			mode, readOnly, locale);
 	}
 
 	protected String getDDMTemplateFieldHTMLByName(
@@ -539,9 +586,10 @@ public class DDMXSDImpl implements DDMXSD {
 	}
 
 	protected String getFieldHTML(
-			HttpServletRequest request, HttpServletResponse response, String xsd,
-			String fieldName, Fields fields, String portletNamespace,
-			String namespace, String mode, boolean readOnly, Locale locale)
+			HttpServletRequest request, HttpServletResponse response,
+			String xsd, String fieldName, Fields fields,
+			String portletNamespace, String namespace, String mode,
+			boolean readOnly, Locale locale)
 		throws DocumentException, Exception {
 
 		Document document = SAXReaderUtil.read(xsd);
