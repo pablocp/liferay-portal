@@ -497,7 +497,7 @@ create table DDMContent (
 	modifiedDate DATE null,
 	name STRING null,
 	description STRING null,
-	data_ VARCHAR(75) null
+	data_ TEXT null
 );
 
 create table DDMStorageLink (
