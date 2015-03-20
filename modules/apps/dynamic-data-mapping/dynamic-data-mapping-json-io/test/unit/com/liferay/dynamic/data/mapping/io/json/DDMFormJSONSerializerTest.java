@@ -12,8 +12,10 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatamapping.io;
+package com.liferay.dynamic.data.mapping.io.json;
 
+import com.liferay.portlet.dynamicdatamapping.io.BaseDDMFormSerializerTestCase;
+import com.liferay.portlet.dynamicdatamapping.io.DDMFormSerializer;
 import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 
 import org.junit.Before;
@@ -28,7 +30,6 @@ public class DDMFormJSONSerializerTest extends BaseDDMFormSerializerTestCase {
 
 	@Before
 	public void setUp() {
-		setUpDDMFormToJSONSerializerUtil();
 		setUpJSONFactoryUtil();
 	}
 
@@ -38,17 +39,12 @@ public class DDMFormJSONSerializerTest extends BaseDDMFormSerializerTestCase {
 
 		DDMForm ddmForm = createDDMForm();
 
-		String actualJSON = DDMFormJSONSerializerUtil.serialize(ddmForm);
+		String actualJSON = _ddmFormJSONSerializerImpl.serialize(ddmForm);
 
 		JSONAssert.assertEquals(expectedJSON, actualJSON, false);
 	}
 
-	protected void setUpDDMFormToJSONSerializerUtil() {
-		DDMFormJSONSerializerUtil ddmFormJSONSerializerUtil =
-			new DDMFormJSONSerializerUtil();
-
-		ddmFormJSONSerializerUtil.setDDMFormJSONSerializer(
-			new DDMFormJSONSerializerImpl());
-	}
+	private final DDMFormSerializer _ddmFormJSONSerializerImpl =
+		new DDMFormJSONSerializerImpl();
 
 }

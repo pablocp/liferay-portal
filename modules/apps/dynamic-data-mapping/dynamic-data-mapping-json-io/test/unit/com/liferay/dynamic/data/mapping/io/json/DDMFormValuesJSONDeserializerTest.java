@@ -12,13 +12,14 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatamapping.io;
+package com.liferay.dynamic.data.mapping.io.json;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portlet.dynamicdatamapping.BaseDDMTestCase;
+import com.liferay.portlet.dynamicdatamapping.io.DDMFormValuesDeserializer;
 import com.liferay.portlet.dynamicdatamapping.model.Value;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormFieldValue;
 import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
@@ -43,7 +44,6 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 
 	@Before
 	public void setUp() {
-		setUpDDMFormValuesJSONDeserializerUtil();
 		setUpLanguageUtil();
 		setUpLocaleUtil();
 		setUpJSONFactoryUtil();
@@ -57,7 +57,7 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 			"ddm-form-values-json-deserializer-parent-repeatable-field.json");
 
 		DDMFormValues ddmFormValues =
-			DDMFormValuesJSONDeserializerUtil.deserialize(
+			_ddmFormValuesJSONDeserializerImpl .deserialize(
 				null, serializedDDMFormValues);
 
 		List<DDMFormFieldValue> ddmFormFieldValues =
@@ -88,7 +88,7 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 			"ddm-form-values-json-deserializer-repeatable-field.json");
 
 		DDMFormValues ddmFormValues =
-			DDMFormValuesJSONDeserializerUtil.deserialize(
+			_ddmFormValuesJSONDeserializerImpl.deserialize(
 				null, serializedDDMFormValues);
 
 		List<DDMFormFieldValue> ddmFormFieldValues =
@@ -108,7 +108,7 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 			"ddm-form-values-json-deserializer-test-data.json");
 
 		DDMFormValues ddmFormValues =
-			DDMFormValuesJSONDeserializerUtil.deserialize(
+			_ddmFormValuesJSONDeserializerImpl.deserialize(
 				null, serializedDDMFormValues);
 
 		testAvailableLocales(ddmFormValues);
@@ -134,7 +134,7 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 			"ddm-form-values-json-deserializer-unlocalizable-fields.json");
 
 		DDMFormValues ddmFormValues =
-			DDMFormValuesJSONDeserializerUtil.deserialize(
+			_ddmFormValuesJSONDeserializerImpl.deserialize(
 				null, serializedDDMFormValues);
 
 		List<DDMFormFieldValue> ddmFormFieldValues =
@@ -175,14 +175,6 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 		JSONAssert.assertEquals(
 			expectedJSONObject.toString(),
 			documentLibraryValue.getString(LocaleUtil.BRAZIL), false);
-	}
-
-	protected void setUpDDMFormValuesJSONDeserializerUtil() {
-		DDMFormValuesJSONDeserializerUtil ddmFormValuesJSONDeserializerUtil =
-			new DDMFormValuesJSONDeserializerUtil();
-
-		ddmFormValuesJSONDeserializerUtil.setDDMFormValuesJSONDeserializer(
-			new DDMFormValuesJSONDeserializerImpl());
 	}
 
 	protected void testAvailableLocales(DDMFormValues ddmFormValues) {
@@ -374,5 +366,8 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 		Assert.assertEquals(expected_en_US, value.getString(LocaleUtil.US));
 		Assert.assertEquals(expected_pt_BR, value.getString(LocaleUtil.BRAZIL));
 	}
+
+	private final DDMFormValuesDeserializer _ddmFormValuesJSONDeserializerImpl =
+		new DDMFormValuesJSONDeserializerImpl();
 
 }

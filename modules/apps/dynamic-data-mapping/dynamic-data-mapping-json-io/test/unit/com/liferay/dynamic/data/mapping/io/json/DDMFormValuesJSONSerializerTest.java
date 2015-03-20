@@ -12,12 +12,13 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatamapping.io;
+package com.liferay.dynamic.data.mapping.io.json;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portlet.dynamicdatamapping.BaseDDMTestCase;
+import com.liferay.portlet.dynamicdatamapping.io.DDMFormValuesSerializer;
 import com.liferay.portlet.dynamicdatamapping.model.LocalizedValue;
 import com.liferay.portlet.dynamicdatamapping.model.UnlocalizedValue;
 import com.liferay.portlet.dynamicdatamapping.model.Value;
@@ -42,7 +43,6 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 
 	@Before
 	public void setUp() {
-		setUpDDMFormValuesJSONSerializerUtil();
 		setUpLocaleUtil();
 		setUpJSONFactoryUtil();
 	}
@@ -54,7 +54,7 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 
 		DDMFormValues ddmFormValues = createDDMFormValues();
 
-		String actualJSON = DDMFormValuesJSONSerializerUtil.serialize(
+		String actualJSON = _ddmFormValuesJSONSerializerImpl .serialize(
 			ddmFormValues);
 
 		JSONAssert.assertEquals(expectedJSON, actualJSON, false);
@@ -241,12 +241,7 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 		return value;
 	}
 
-	protected void setUpDDMFormValuesJSONSerializerUtil() {
-		DDMFormValuesJSONSerializerUtil ddmFormValuesJSONSerializerUtil =
-			new DDMFormValuesJSONSerializerUtil();
-
-		ddmFormValuesJSONSerializerUtil.setDDMFormValuesJSONSerializer(
-			new DDMFormValuesJSONSerializerImpl());
-	}
+	private final DDMFormValuesSerializer _ddmFormValuesJSONSerializerImpl =
+		new DDMFormValuesJSONSerializerImpl();
 
 }

@@ -12,10 +12,12 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatamapping.io;
+package com.liferay.dynamic.data.mapping.io.json;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portlet.dynamicdatamapping.io.BaseDDMFormDeserializerTestCase;
+import com.liferay.portlet.dynamicdatamapping.io.DDMFormDeserializer;
 import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 
 import org.junit.Before;
@@ -31,7 +33,7 @@ public class DDMFormJSONDeserializerTest
 
 	@Before
 	public void setUp() {
-		setUpDDMFormJSONDeserializerUtil();
+		setUpDDMFormDeserializer();
 		setUpLocaleUtil();
 		setUpJSONFactoryUtil();
 	}
@@ -40,7 +42,7 @@ public class DDMFormJSONDeserializerTest
 	protected DDMForm deserialize(String serializedDDMForm)
 		throws PortalException {
 
-		return DDMFormJSONDeserializerUtil.deserialize(serializedDDMForm);
+		return _ddmFormJSONDeserializerImpl.deserialize(serializedDDMForm);
 	}
 
 	@Override
@@ -53,12 +55,10 @@ public class DDMFormJSONDeserializerTest
 		return ".json";
 	}
 
-	protected void setUpDDMFormJSONDeserializerUtil() {
-		DDMFormJSONDeserializerUtil ddmFormJSONDeserializerUtil =
-			new DDMFormJSONDeserializerUtil();
-
-		ddmFormJSONDeserializerUtil.setDDMFormJSONDeserializer(
-			new DDMFormJSONDeserializerImpl());
+	private void setUpDDMFormDeserializer() {
+		_ddmFormJSONDeserializerImpl = new DDMFormJSONDeserializerImpl();
 	}
+
+	private DDMFormDeserializer _ddmFormJSONDeserializerImpl;
 
 }

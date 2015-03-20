@@ -12,10 +12,11 @@
  * details.
  */
 
-package com.liferay.portlet.dynamicdatamapping.io;
+package com.liferay.dynamic.data.mapping.io.json;
 
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portlet.dynamicdatamapping.BaseDDMTestCase;
+import com.liferay.portlet.dynamicdatamapping.io.DDMFormLayoutDeserializer;
 import com.liferay.portlet.dynamicdatamapping.model.DDMFormLayout;
 import com.liferay.portlet.dynamicdatamapping.model.DDMFormLayoutColumn;
 import com.liferay.portlet.dynamicdatamapping.model.DDMFormLayoutPage;
@@ -38,7 +39,6 @@ public class DDMFormLayoutJSONDeserializerTest extends BaseDDMTestCase {
 
 	@Before
 	public void setUp() {
-		setUpDDMFormLayoutJSONDeserializerUtil();
 		setUpJSONFactoryUtil();
 		setUpLocaleUtil();
 	}
@@ -49,7 +49,7 @@ public class DDMFormLayoutJSONDeserializerTest extends BaseDDMTestCase {
 			"ddm-form-layout-json-deserializer-test-data.json");
 
 		DDMFormLayout ddmFormLayout =
-			DDMFormLayoutJSONDeserializerUtil.deserialize(
+			_ddmFormLayoutJSONDeserializerImpl.deserialize(
 				serializedDDMFormLayout);
 
 		Assert.assertEquals(LocaleUtil.US, ddmFormLayout.getDefaultLocale());
@@ -111,12 +111,7 @@ public class DDMFormLayoutJSONDeserializerTest extends BaseDDMTestCase {
 		}
 	}
 
-	protected void setUpDDMFormLayoutJSONDeserializerUtil() {
-		DDMFormLayoutJSONDeserializerUtil ddmFormLayoutJSONDeserializerUtil =
-			new DDMFormLayoutJSONDeserializerUtil();
-
-		ddmFormLayoutJSONDeserializerUtil.setDDMFormLayoutJSONDeserializer(
-			new DDMFormLayoutJSONDeserializerImpl());
-	}
+	private final DDMFormLayoutDeserializer _ddmFormLayoutJSONDeserializerImpl =
+		new DDMFormLayoutJSONDeserializerImpl();
 
 }
