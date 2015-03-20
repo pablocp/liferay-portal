@@ -14,13 +14,13 @@
 
 package com.liferay.portlet.dynamicdatamapping.io;
 
-import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
+import com.liferay.portlet.dynamicdatamapping.model.DDMFormLayout;
 
 /**
  * @author Marcellus Tavares
  */
-public interface DDMFormJSONSerializer {
+public interface DDMFormLayoutSerializer {
 
-	public String serialize(DDMForm ddmForm);
+	public String serialize(DDMFormLayout ddmFormLayout);
 
 }

@@ -20,7 +20,7 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
 /**
  * @author Marcellus Tavares
  */
-public interface DDMFormJSONDeserializer {
+public interface DDMFormDeserializer {
 
 	public DDMForm deserialize(String serializedDDMForm) throws PortalException;
 

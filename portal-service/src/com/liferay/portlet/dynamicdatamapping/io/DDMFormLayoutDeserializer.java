@@ -14,13 +14,15 @@
 
 package com.liferay.portlet.dynamicdatamapping.io;
 
-import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portlet.dynamicdatamapping.model.DDMFormLayout;
 
 /**
  * @author Marcellus Tavares
  */
-public interface DDMFormValuesJSONSerializer {
+public interface DDMFormLayoutDeserializer {
 
-	public String serialize(DDMFormValues ddmFormValues);
+	public DDMFormLayout deserialize(String serializedDDMFormLayout)
+		throws PortalException;
 
 }
