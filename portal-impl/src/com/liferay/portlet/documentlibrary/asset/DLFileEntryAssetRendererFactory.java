@@ -198,6 +198,8 @@ public class DLFileEntryAssetRendererFactory extends BaseAssetRendererFactory {
 			PortletURL addPortletURL, long classTypeId)
 		throws PortalException {
 
+		super.setAddPortletURLClassTypeId(addPortletURL, classTypeId);
+
 		addPortletURL.setParameter(Constants.CMD, Constants.ADD);
 		addPortletURL.setParameter(
 			"folderId",

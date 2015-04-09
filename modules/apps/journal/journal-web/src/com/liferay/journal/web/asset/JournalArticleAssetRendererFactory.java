@@ -234,6 +234,8 @@ public class JournalArticleAssetRendererFactory
 			PortletURL addPortletURL, long classTypeId)
 		throws PortalException {
 
+		super.setAddPortletURLClassTypeId(addPortletURL, classTypeId);
+
 		if (classTypeId <= 0) {
 			return;
 		}
