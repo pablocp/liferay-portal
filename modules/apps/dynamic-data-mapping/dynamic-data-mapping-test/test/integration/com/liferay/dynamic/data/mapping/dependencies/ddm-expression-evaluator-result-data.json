@@ -1,1 +1,48 @@
-{"fields":[{"nestedFields":[{"nestedFields":[],"valid":true,"visible":false,"name":"Integer","instanceId":"lroa"}],"valid":false,"visible":true,"name":"Text","instanceId":"gfkm"},{"nestedFields":[{"nestedFields":[],"valid":false,"visible":false,"name":"Integer","instanceId":"uvwn"},{"nestedFields":[],"valid":false,"visible":false,"name":"Integer","instanceId":"lsky"}],"valid":false,"visible":true,"name":"Text","instanceId":"xucq"},{"nestedFields":[],"valid":true,"visible":false,"name":"Boolean","instanceId":"mnst"}]}
+{
+	"fields":[
+		{
+			"nestedFields":[
+				{
+					"nestedFields":[],
+					"visible":false,
+					"validationMessages":[],
+					"name":"Integer",
+					"instanceId":"lroa"
+				}
+			],
+			"visible":true,
+			"validationMessages":["This field is never valid"],
+			"name":"Text",
+			"instanceId":"gfkm"
+		},
+		{
+			"nestedFields":[
+				{
+					"nestedFields":[],
+					"visible":false,
+					"validationMessages":["Must be equals to zero"],
+					"name":"Integer",
+					"instanceId":"uvwn"
+				},
+				{
+					"nestedFields":[],
+					"visible":false,
+					"validationMessages":["Must be equals to zero"],
+					"name":"Integer",
+					"instanceId":"lsky"
+				}
+			],
+			"visible":true,
+			"validationMessages":["This field is never valid"],
+			"name":"Text",
+			"instanceId":"xucq"
+		},
+		{
+			"nestedFields":[],
+			"visible":false,
+			"validationMessages":[],
+			"name":"Boolean",
+			"instanceId":"mnst"
+		}
+	]
+}

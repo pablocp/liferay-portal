@@ -79,7 +79,7 @@ public class DDMExpressionEvaluatorTest extends BaseDDMServiceTestCase {
 		String actualResult = jsonSerializer.serializeDeep(
 			ddmFormExpressionEvaluatorResult);
 
-		JSONAssert.assertEquals(expectedResult, actualResult, false);
+		JSONAssert.assertEquals(expectedResult, actualResult, true);
 	}
 
 }
