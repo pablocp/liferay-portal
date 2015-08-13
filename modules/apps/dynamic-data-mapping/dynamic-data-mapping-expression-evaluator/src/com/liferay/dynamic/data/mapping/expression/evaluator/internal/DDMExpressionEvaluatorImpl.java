@@ -17,10 +17,10 @@ package com.liferay.dynamic.data.mapping.expression.evaluator.internal;
 import com.liferay.dynamic.data.mapping.expression.evaluator.DDMExpressionEvaluator;
 import com.liferay.dynamic.data.mapping.expression.evaluator.DDMExpressionEvaluatorException;
 import com.liferay.dynamic.data.mapping.expression.evaluator.DDMFormExpressionEvaluatorResult;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.portal.expression.ExpressionFactory;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
-import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
 
 import java.util.Locale;
 
@@ -33,6 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true)
 public class DDMExpressionEvaluatorImpl implements DDMExpressionEvaluator {
 
+	@Override
 	public DDMFormExpressionEvaluatorResult evaluate(
 			DDMForm ddmForm, DDMFormValues ddmFormValues, Locale locale)
 		throws DDMExpressionEvaluatorException {

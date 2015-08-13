@@ -14,8 +14,8 @@
 
 package com.liferay.dynamic.data.mapping.expression.evaluator;
 
-import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
-import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 
 import java.util.Locale;
 

@@ -16,14 +16,14 @@ package com.liferay.dynamic.data.mapping.expression.evaluator.internal;
 
 import com.liferay.dynamic.data.mapping.expression.evaluator.DDMExpressionEvaluator;
 import com.liferay.dynamic.data.mapping.expression.evaluator.DDMFormExpressionEvaluatorResult;
+import com.liferay.dynamic.data.mapping.io.DDMFormJSONDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesJSONDeserializer;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portlet.dynamicdatamapping.io.DDMFormJSONDeserializer;
-import com.liferay.portlet.dynamicdatamapping.io.DDMFormValuesJSONDeserializer;
-import com.liferay.portlet.dynamicdatamapping.model.DDMForm;
-import com.liferay.portlet.dynamicdatamapping.storage.DDMFormValues;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
